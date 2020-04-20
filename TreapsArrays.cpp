@@ -57,7 +57,7 @@ public:
 	{
 		Node *l,*m,*r;
 		split(this->root,l,r,position-1);
-		split(this->root,m,r,1);
+		split(r,m,r,1);
 		merge(this->root,l,r);
 	}
 	int atPosition(int position, Node *root=nullptr)

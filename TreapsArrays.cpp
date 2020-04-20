@@ -10,13 +10,11 @@ public:
 	{
 	public:
 		int data;
-		int position;
 		int priority;
 		Node *left, *right;
 		int size;
-		Node(int data, int position)
+		Node(int data)
 		{
-			this->position=position;
 			this->data=data;
 			this->left=this->right=nullptr;
 			this->priority=rand()%max_size;
@@ -36,7 +34,7 @@ public:
 		int curr=preset+(root->left?root->left->size:0)+1;
 		if(position>=curr) split(root->right,root->right,r,position,curr),l=root;
 		else split(root->left,l,root->left,position,preset), r=root;
-		root->size=(root->left?root->left->size:0)+(root->right?root->right->size:0)+1;
+		if(root) root->size=(root->left?root->left->size:0)+(root->right?root->right->size:0)+1;
 	}
 	void merge(Node *&root, Node *l, Node *r)
 	{
@@ -44,12 +42,12 @@ public:
 		else if(l->priority>r->priority)
 			merge(l->right,l->right,r),root=l;
 		else merge(r->left,l,r->left), root=r;
-		root->size=(root->left?root->left->size:0)+(root->right?root->right->size:0)+1;
+		if(root) root->size=(root->left?root->left->size:0)+(root->right?root->right->size:0)+1;
 	}
 	void insert(int data)
 	{
-		Node *l, *r, *curr= new Node(data,++(this->size));
-		split(this->root,l,r,this->size-1);
+		Node *l, *r, *curr= new Node(data);
+		split(this->root,l,r,this->size++);
 		merge(this->root,l,curr);
 		merge(this->root,this->root,r);
 	}
@@ -78,7 +76,7 @@ public:
 	{
 		if(!root) if(this->root) root=this->root; else return;
 		if(root->left) inorderPrint(root->left);
-		cout<<root->position<<' '<<root->data<<' '<<root->priority<<' '<<root->size<<endl;
+		cout<<root->data<<' '<<root->priority<<' '<<root->size<<endl;
 		if(root->right) inorderPrint(root->right);
 	}
 	void levelorderPrint(Node *root=nullptr)
@@ -89,7 +87,7 @@ public:
 		while(!q.empty())
 		{
 			root= q.front();
-			cout<<root->position<<' '<<root->data<<' '<<root->priority<<' '<<root->size<<endl;
+			cout<<root->data<<' '<<root->priority<<' '<<root->size<<endl;
 			q.pop();
 			if(root->left) q.push(root->left);
 			if(root->right) q.push(root->right);
@@ -98,15 +96,17 @@ public:
 };
 int main()
 {
-	int x,n,m;
+	int x,n;
 	long a;
-	cin>>n>>m;
+	cin>>n;
 	TreapsArrays arr;
 	for(x=0;x<n;++x)
 	{
 		cin>>a;
 		arr.insert(a);
 	}
+//	arr.inorderPrint();
+//	arr.levelorderPrint();
 	for(x=1;x<=n;++x)
 	{
 		cout<<arr.atPosition(x)<<' ';

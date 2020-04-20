@@ -35,7 +35,7 @@ public:
 		if(!root) return void(l=r=nullptr);
 		int curr=preset+(root->left?root->left->size:0)+1;
 		if(position>=curr) split(root->right,root->right,r,position,curr),l=root;
-		else split(root->left,r,root->left,position,preset);
+		else split(root->left,r,root->left,position,preset), r=root;
 		root->size=(root->left?root->left->size:0)+(root->right?root->right->size:0)+1;
 	}
 	void merge(Node *&root, Node *l, Node *r)
